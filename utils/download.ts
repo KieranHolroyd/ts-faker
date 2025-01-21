@@ -1,5 +1,17 @@
-import { toSQL } from "@core/transformer";
 import { GeneratedType, OutputFormat } from "../types";
+
+export const toSQL = (item: GeneratedType) => {
+  let sql: string = "";
+  sql += `INSERT INTO ${item.name} VALUES ${item.data
+    .map(
+      (m) =>
+        `(${Object.values(m)
+          .map((o) => `'${JSON.stringify(o)}'`)
+          .join(",")})`
+    )
+    .join(",")}\n\n`;
+  return sql;
+};
 
 export const downloadObjectAsJson = (
   exportObj: unknown,
